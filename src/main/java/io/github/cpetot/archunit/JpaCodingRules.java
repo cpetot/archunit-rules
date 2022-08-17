@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import com.tngtech.archunit.PublicAPI;
 import com.tngtech.archunit.lang.ArchRule;
 
+/**
+ * JpaCodingRules provides a set of general {@link ArchRule ArchRules} for coding that might be useful in the projects using JPA.
+ */
 public final class JpaCodingRules {
 
 	private JpaCodingRules() {
@@ -22,28 +25,27 @@ public final class JpaCodingRules {
 	 * In JPA, such a constructor is required for a valid entity.
 	 * </p>
 	 *
-	 * <p>
+	 * <div>
 	 * Valid examples :
 	 * <pre>{@code
-	 * @Entity
+	 * 	&#64;Entity
 	 * public class MyEntity {
 	 *   // Fields
 	 *   public MyEntity() {}
 	 * }
 	 *
-	 * @Entity
+	 * 	&#64;Entity
 	 * public class MyEntity {
 	 *   // Implicit public constructor
 	 * }
 	 *
-	 * }
-	 * </pre>
-	 * </p>
+	 * }</pre>
+	 * </div>
 	 *
-	 * <p>
+	 * <div>
 	 * Invalid examples :
 	 * <pre>{@code
-	 * @Entity
+	 * 	&#64;Entity
 	 * public class MyEntity {
 	 *   // Fields
 	 *   public MyEntity(Long id) {
@@ -51,14 +53,13 @@ public final class JpaCodingRules {
 	 *   }
 	 * }
 	 *
-	 * @Entity
+	 * 	&#64;Entity
 	 * public class MyEntity {
 	 *   // Fields
 	 *   private MyEntity() {}
 	 * }
-	 * }
-	 * </pre>
-	 * </p>
+	 * }</pre>
+	 * </div>
 	 *
 	 * @see StandardCodingRules#HAS_A_PUBLIC_EMPTY_CONSTRUCTOR
 	 */

@@ -80,7 +80,7 @@ public final class StandardCodingRules {
 
 	/**
 	 * A condition that checks if the Java class has a public no-args constructor
-	 * <p>
+	 * <div>
 	 * Matching examples :
 	 * <pre>{@code
 	 * public class MyClass {
@@ -92,11 +92,10 @@ public final class StandardCodingRules {
 	 *   // Implicit public constructor
 	 * }
 	 *
-	 * }
-	 * </pre>
-	 * </p>
+	 * }</pre>
+	 * </div>
 	 *
-	 * <p>
+	 * <div>
 	 * Not marching examples :
 	 * <pre>{@code
 	 * public class MyClass {
@@ -110,9 +109,8 @@ public final class StandardCodingRules {
 	 *   // Fields
 	 *   private MyClass() {}
 	 * }
-	 * }
-	 * </pre>
-	 * </p>
+	 * }</pre>
+	 * </div>
 	 */
 	@PublicAPI(usage = ACCESS)
 	public static final ArchCondition<JavaClass> HAS_A_PUBLIC_EMPTY_CONSTRUCTOR = hasAPublicEmptyConstructor();
