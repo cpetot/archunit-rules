@@ -15,7 +15,7 @@ class JpaCodingRulesTest {
 
 	@Nested
 	@DisplayName("when JPA_ENTITIES_HAVE_PUBLIC_EMPTY_CONSTRUCTOR")
-	class JpaEntitiesHavePublicEmptyConstructor {
+	class JpaEntitiesHavePublicEmptyConstructorTest {
 
 		@Test
 		void should_raise_no_error_with_explicit_public_empty_constructor() {
