@@ -1,4 +1,5 @@
 [![CI](https://github.com/cpetot/archunit-rules/actions/workflows/build.yml/badge.svg)](https://github.com/cpetot/archunit-rules/actions/workflows/maven.yml?query=branch%3Amain++)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.cpetot/archunit-rules/badge.svg)](https://search.maven.org/search?q=g:io.github.cpetot%20AND%20a:archunit-rules)
 [![License](https://img.shields.io/badge/licence-Apache%202-blue)](https://github.com/cpetot/archunit-rules/blob/main/LICENSE)
 # ArchUnit rules
 
