@@ -20,16 +20,17 @@ class SpringCodingRulesTest {
 		@Test
 		void should_raise_no_error_with_class_annotated_transactional() {
 			JavaClasses classes = new ClassFileImporter().importClasses(TestRepository.class, TestTransactionalService.class);
-			SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES.check(classes);
+			SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES.allowEmptyShould(false).check(classes);
 		}
 
 		@Test
 		void should_raise_one_error_on_method_not_annotated_with_class_not_annotated_transactional() {
 			JavaClasses classes = new ClassFileImporter().importClasses(TestRepository.class, TestService.class);
-			Assertions.assertThatThrownBy(() -> SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES.check(classes))
+			Assertions.assertThatThrownBy(() -> SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES.allowEmptyShould(false).check(classes))
 				.isInstanceOf(AssertionError.class)
-				.hasMessageContaining("Rule 'classes that are annotated with @Repository should be accessed by @Transactional methods' was violated (1 times)")
-				.hasMessageContaining("Method %s.callRepositoryWithoutTransactional() is not @Transactional", TestService.class.getName());
+				.hasMessageContaining("Rule 'classes that are annotated with @Repository should be accessed by @Transactional classes or methods' was violated (1 times)")
+				.hasMessageContaining("Neither Class %s or Method %s.callRepositoryWithoutTransactional() are annotated by @Transactional",
+					TestService.class.getName(), TestService.class.getName());
 		}
 	}
 
