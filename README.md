@@ -16,7 +16,7 @@ testImplementation 'io.github.cpetot.archunit:archunit-rules:0.1-SNAPSHOT'
 
 ```
 <dependency>
-    <groupId>io.github.cpetot.archunit</groupId>
+    <groupId>io.github.cpetot</groupId>
     <artifactId>archunit-rules</artifactId>
     <version>0.1-SNAPSHOT</version>
     <scope>test</scope>
