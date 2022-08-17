@@ -6,7 +6,7 @@
 
 	<groupId>io.github.cpetot</groupId>
 	<artifactId>archunit-rules</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Add ArchUnit rules for coding that might be useful in various projects.</description>
