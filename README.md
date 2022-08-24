@@ -12,7 +12,7 @@ Add rules on [ArchUnit](https://github.com/TNG/ArchUnit)
 ###### Gradle
 
 ```
-testImplementation 'io.github.cpetot.archunit:archunit-rules:0.1'
+testImplementation 'io.github.cpetot:archunit-rules:0.1'
 ```
 
 ###### Maven
