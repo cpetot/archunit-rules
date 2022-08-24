@@ -111,7 +111,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Only to test an ArchRule -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Only to test an ArchRule, not for testing the lib -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
