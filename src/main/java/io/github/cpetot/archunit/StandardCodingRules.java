@@ -6,9 +6,13 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.dependOnClassesThat;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import com.tngtech.archunit.PublicAPI;
+import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.lang.ArchCondition;
@@ -131,4 +135,101 @@ public final class StandardCodingRules {
 		};
 	}
 
+	/**
+	 * A condition that checks if the Java class is only accessed by classes meta annotated by a given annotation.
+	 * <div>
+	 * Matching examples if you're looking for mandatory &#64;YourAnnotation for the classes calling ATargetClass:
+	 * <pre>{@code
+	 * public class ATargetClass {
+	 * }
+	 *
+	 * &#64;YourAnnotation
+	 * public class ACallingClass {
+	 * 	private final ATargetClass aTargetClass;
+	 *
+	 * 	public ACallingClass(ATargetClass aTargetClass) {
+	 * 		this.aTargetClass = aTargetClass;
+	 *    }
+	 * }
+	 *
+	 * }</pre>
+	 * </div>
+	 *
+	 * <div>
+	 * Not marching examples if you're looking for mandatory &#64;YourAnnotation for the classes calling ATargetClass:
+	 * <pre>{@code
+	 * public class ATargetClass {
+	 * }
+	 *
+	 * &#64;AnotherAnnotation
+	 * public class ACallingClass {
+	 * 	private final ATargetClass aTargetClass;
+	 *
+	 * 	public ACallingClass(ATargetClass aTargetClass) {
+	 * 		this.aTargetClass = aTargetClass;
+	 *    }
+	 * }
+	 *
+	 * // No annotation
+	 * public class ACallingClass {
+	 * 	private final ATargetClass aTargetClass;
+	 *
+	 * 	public ACallingClass(ATargetClass aTargetClass) {
+	 * 		this.aTargetClass = aTargetClass;
+	 *    }
+	 * }
+	 * }</pre>
+	 * </div>
+	 *
+	 * @param annotationClass the mandatory annotation class.
+	 * @return the condition.
+	 */
+	@PublicAPI(usage = ACCESS)
+	public static ArchCondition<JavaClass> beAccessedOnlyByClassesMetaAnnotatedBy(Class<? extends Annotation> annotationClass) {
+		return new ArchCondition<>("be called by @%s classes", annotationClass.getSimpleName()) {
+			@Override
+			public void check(JavaClass javaClass, ConditionEvents events) {
+				javaClass.getDirectDependenciesToSelf().stream()
+					.map(Dependency::getOriginClass)
+					.distinct()
+					.filter(originClass -> !originClass.isMetaAnnotatedWith(annotationClass))
+					.map(originClass -> SimpleConditionEvent.violated(originClass, String.format(
+							"Class %s is not annotated by @%s",
+							originClass.getFullName(),
+							annotationClass.getSimpleName()
+						))
+					)
+					.forEach(events::add);
+			}
+		};
+	}
+
+	/**
+	 * Similar to {@link #beAccessedOnlyByClassesMetaAnnotatedBy(Class)}, but target <em>any</em> of the given annotations.
+	 *
+	 * @param annotationsClasses the annotation classes.
+	 * @return the condition.
+	 */
+	@PublicAPI(usage = ACCESS)
+	public static ArchCondition<JavaClass> beAccessedOnlyByClassesMetaAnnotatedByAny(Class<? extends Annotation>... annotationsClasses) {
+		String annotationsDescription = Arrays.stream(annotationsClasses)
+			.map(annotationClass -> "@" + annotationClass.getSimpleName())
+			.collect(Collectors.joining(" or "));
+		return new ArchCondition<>("be called by %s classes", annotationsDescription) {
+			@Override
+			public void check(JavaClass javaClass, ConditionEvents events) {
+				javaClass.getDirectDependenciesToSelf().stream()
+					.map(Dependency::getOriginClass)
+					.distinct()
+					.filter(originClass -> Arrays.stream(annotationsClasses).noneMatch(originClass::isMetaAnnotatedWith))
+					.map(originClass -> SimpleConditionEvent.violated(originClass, String.format(
+							"Class %s is annotated neither by %s",
+							originClass.getFullName(),
+							annotationsDescription
+						))
+					)
+					.forEach(events::add);
+			}
+		};
+	}
 }

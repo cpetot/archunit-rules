@@ -35,21 +35,33 @@ import static io.github.cpetot.archunit.StandardCodingRules.NO_CLASSES_SHOULD_US
 import static io.github.cpetot.archunit.StandardCodingRules.NO_CLASSES_SHOULD_USE_JAVA_UTIL_DATE;
 import static io.github.cpetot.archunit.JpaCodingRules.JPA_ENTITIES_HAVE_PUBLIC_EMPTY_CONSTRUCTOR;
 import static io.github.cpetot.archunit.SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES;
+import static io.github.cpetot.archunit.SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_CLASSES;
+import static io.github.cpetot.archunit.SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_OR_CONTROLLER_CLASSES;
+import static io.github.cpetot.archunit.SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES;
 
 @AnalyzeClasses(packages = "org.example")
 class MyCodingRulesTest {
 
+	// Standard rules
 	@ArchTest
 	private ArchRule no_classes_should_use_junit_4 = NO_CLASSES_SHOULD_USE_JUNIT_4;
 
 	@ArchTest
 	private ArchRule no_classes_should_use_java_util_date = NO_CLASSES_SHOULD_USE_JAVA_UTIL_DATE;
 
+	// JPA rules
 	@ArchTest
 	private ArchRule jpa_entities_must_declare_a_public_empty_constructor = JPA_ENTITIES_HAVE_PUBLIC_EMPTY_CONSTRUCTORS;
 
+	// Spring rules
 	@ArchTest
 	private ArchRule repositories_are_accessed_by_transactional_classes_or_methods = REPOSITORIES_ARE_ACCESSED_ONLY_BY_TRANSACTIONAL_METHODS_OR_CLASSES;
+
+	@ArchTest
+	private ArchRule repositories_are_accessed_only_by_service_classes = REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_CLASSES;
+
+	@ArchTest
+	private ArchRule repositories_are_accessed_only_by_service_or_controller_classes = REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_OR_CONTROLLER_CLASSES;
 }
 ```
 

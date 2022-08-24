@@ -18,15 +18,9 @@ Bsrc/test/java/io/github/cpetot/archunit/date/LocalDateExample.java,2\f\2f6f7f7
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-M
-.github/workflows/release.yml,1\6\16911b9809e0d05b7b124ba8453fa5303d74924c
 n
 >src/test/java/io/github/cpetot/archunit/junit4/JUnit4Test.java,0\6\0632f98257f64bebdeba399224ff7575e3718b2a
 K
 .github/workflows/build.yml,f\e\fe77d5d1439f26e353a42bbd38dece2467ff6558
-k
-;src/main/java/io/github/cpetot/archunit/JpaCodingRules.java,9\f\9fcb2cced8e8dd2b24b11e7d13dc7c1d7b3ef974
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 {
 Ksrc/test/java/io/github/cpetot/archunit/spring/transaction/TestService.java,b\f\bfd631ebcfe548c109079a9bded64d717c53e9ae
