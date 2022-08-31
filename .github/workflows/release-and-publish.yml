@@ -46,7 +46,7 @@ jobs:
           git add .
           git commit -m "Create stable version version"
 
-          mvn clean package -Prelease
+          mvn clean package
 
           # Do not push if mvn package is KO
           git push
@@ -68,7 +68,6 @@ jobs:
             --no-transfer-progress \
             --batch-mode \
             deploy
-            -Prelease
         env:
           PUBLISH_ENABLED: ${{ secrets.PUBLISH_ON_MAVEN_CENTRAL }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
