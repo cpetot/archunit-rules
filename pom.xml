@@ -203,10 +203,7 @@
 		<profile>
 			<id>release</id>
 			<activation>
-				<property>
-					<name>environment</name>
-					<value>!local</value>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
