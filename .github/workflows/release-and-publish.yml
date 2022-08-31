@@ -45,9 +45,9 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
           git commit -m "Create stable version version"
-          
+
           mvn clean package -Prelease
-          
+
           # Do not push if mvn package is KO
           git push
           git tag -a ${{ env.version }} -m "${{ env.version }}"
@@ -68,6 +68,7 @@ jobs:
             --no-transfer-progress \
             --batch-mode \
             deploy
+            -Prelease
         env:
           PUBLISH_ENABLED: ${{ secrets.PUBLISH_ON_MAVEN_CENTRAL }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -79,7 +80,7 @@ jobs:
           ./mvnw build-helper:parse-version versions:set -DnextSnapshot=true versions:commit
           export newSnapshotVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Next version is '$newSnapshotVersion'" >> $GITHUB_STEP_SUMMARY
-          
+
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
