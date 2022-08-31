@@ -1,0 +1,87 @@
+name: Release and publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Java for publishing to Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Read current version
+        run: |
+          export currentVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          export version=$(echo $currentVersion) | cut -d\  -f1
+          echo "currentVersion=$currentVersion" >> $GITHUB_ENV
+          echo "Current version is '$currentVersion'" >> $GITHUB_STEP_SUMMARY
+
+      - name: Determine release version
+        id: set-release-version
+        run: |
+          version=$(echo ${{ env.currentVersion }} | cut -d- -f1)
+          echo "version=$version" >> $GITHUB_ENV
+          echo "Release version is '$version'" >> $GITHUB_STEP_SUMMARY
+
+      - name: Maven set version and build
+        run: |
+          ./mvnw build-helper:parse-version versions:set -DnewVersion=$version versions:commit
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "Create stable version version"
+          
+          mvn clean package -Prelease
+          
+          # Do not push if mvn package is KO
+          git push
+          git tag -a ${{ env.version }} -m "${{ env.version }}"
+          git push origin ${{ env.version }}
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "${{ github.workspace }}/target/*.jar"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "${{ env.version }}"
+
+      - name: Publish to the Maven Central Repository
+        if: "${{ env.PUBLISH_ENABLED == 'true' }}"
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            deploy
+        env:
+          PUBLISH_ENABLED: ${{ secrets.PUBLISH_ON_MAVEN_CENTRAL }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+
+      - name: Create next SNAPSHOT
+        run: |
+          ./mvnw build-helper:parse-version versions:set -DnextSnapshot=true versions:commit
+          export newSnapshotVersion=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Next version is '$newSnapshotVersion'" >> $GITHUB_STEP_SUMMARY
+          
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "Start new version $newSnapshotVersion"
+          git push

@@ -20,7 +20,5 @@ Bsrc/test/java/io/github/cpetot/archunit/date/LocalDateExample.java,2\f\2f6f7f7
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 n
 >src/test/java/io/github/cpetot/archunit/junit4/JUnit4Test.java,0\6\0632f98257f64bebdeba399224ff7575e3718b2a
-K
-.github/workflows/build.yml,f\e\fe77d5d1439f26e353a42bbd38dece2467ff6558
 {
 Ksrc/test/java/io/github/cpetot/archunit/spring/transaction/TestService.java,b\f\bfd631ebcfe548c109079a9bded64d717c53e9ae
