@@ -12,7 +12,7 @@ Add rules on [ArchUnit](https://github.com/TNG/ArchUnit)
 ###### Gradle
 
 ```
-testImplementation 'io.github.cpetot:archunit-rules:0.1'
+testImplementation 'io.github.cpetot:archunit-rules:0.3'
 ```
 
 ###### Maven
@@ -22,7 +22,7 @@ testImplementation 'io.github.cpetot:archunit-rules:0.1'
 <dependency>
 	<groupId>io.github.cpetot</groupId>
 	<artifactId>archunit-rules</artifactId>
-	<version>0.1</version>
+	<version>0.3</version>
 	<scope>test</scope>
 </dependency>
 ```
