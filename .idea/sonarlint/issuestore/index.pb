@@ -13,8 +13,6 @@ r
 Bsrc/test/java/io/github/cpetot/archunit/date/LocalDateExample.java,2\f\2f6f7f79eb0711832663457f63ecb727a6e0ed0d
 =
 .editorconfig,6\2\626a747c8694eaae66f2afb3d1a745b045782c70
-ç
-]src/test/java/io/github/cpetot/archunit/jpa/TestEntityWithExplicitPublicEmptyConstructor.java,0\8\086f5bd131b7aa14dddc6464a199bda99b095742
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302

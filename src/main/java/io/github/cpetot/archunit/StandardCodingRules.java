@@ -10,10 +10,14 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.tngtech.archunit.PublicAPI;
+import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaCodeUnit;
+import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
@@ -136,6 +140,78 @@ public final class StandardCodingRules {
 	}
 
 	/**
+	 * A condition that checks if the Java method is a {@code void} without any parameter.
+	 * The method can have any access level.
+	 * <div>
+	 * Matching examples :
+	 * <pre>{@code
+	 * private void foo() {
+	 *     // Any impl
+	 * }
+	 *
+	 * void bar() {
+	 *     // Any impl
+	 * }
+	 *
+	 * protected void foofoo() {
+	 *     // Any impl
+	 * }
+	 *
+	 * public void barbar() {
+	 *     // Any impl
+	 * }
+	 * }</pre>
+	 * </div>
+	 *
+	 * <div>
+	 * Not marching examples :
+	 * <pre>{@code
+	 * // The method type is incorrect
+	 * private String foo() {
+	 *     // Any impl
+	 * }
+	 *
+	 * // At least one argument
+	 * private void bar(String arg) {
+	 *     // Any impl
+	 * }
+	 * }</pre>
+	 * </div>
+	 */
+	@PublicAPI(usage = ACCESS)
+	public static final ArchCondition<JavaMethod> BE_A_VOID_WITHOUT_PARAMETER = beAVoidWithoutParameter();
+
+	private static ArchCondition<JavaMethod> beAVoidWithoutParameter() {
+		return new ArchCondition<>("be a void without any parameter") {
+			@Override
+			public void check(JavaMethod method, ConditionEvents events) {
+				if (!"void".equals(method.getReturnType().getName())) {
+					events.add(SimpleConditionEvent.violated(
+						method, String.format("Method %s is not a void but returns a %s", method.getFullName(), method.getReturnType().getName()))
+					);
+				}
+				if (!method.getParameters().isEmpty()) {
+					events.add(SimpleConditionEvent.violated(
+						method, String.format("Method %s should be without any parameter but has %d parameter(s)", method.getFullName(), method.getParameters().size()))
+					);
+				}
+			}
+		};
+	}
+
+	public static DescribedPredicate<JavaCodeUnit> areAnnotatedByAny(Class<? extends Annotation>... annotationClasses) {
+		String annotationsDescription = Stream.of(annotationClasses)
+			.map(Class::getSimpleName)
+			.collect(Collectors.joining(" or "));
+		return new DescribedPredicate<>("methods that are annotated with " + annotationsDescription) {
+			@Override
+			public boolean test(JavaCodeUnit codeUnit) {
+				return Stream.of(annotationClasses).anyMatch(codeUnit::isMetaAnnotatedWith);
+			}
+		};
+	}
+
+	/**
 	 * A condition that checks if the Java class is only accessed by classes meta annotated by a given annotation.
 	 * <div>
 	 * Matching examples if you're looking for mandatory &#64;YourAnnotation for the classes calling ATargetClass:
@@ -149,7 +225,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 * 	}
+	 *    }
 	 * }
 	 *
 	 * }</pre>
@@ -167,7 +243,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 * 	}
+	 *    }
 	 * }
 	 *
 	 * // No annotation
@@ -176,7 +252,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 * 	}
+	 *    }
 	 * }
 	 * }</pre>
 	 * </div>
