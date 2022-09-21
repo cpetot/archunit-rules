@@ -19,7 +19,7 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 
 /**
- * SpringCodingRulesTest provides a set of general {@link ArchCondition ArchConditions}
+ * SpringCodingRules provides a set of general {@link ArchCondition ArchConditions}
  * and {@link ArchRule ArchRules} for coding that might be useful in the projects using Spring.
  */
 public final class SpringCodingRules {
@@ -44,7 +44,7 @@ public final class SpringCodingRules {
 	 *
 	 * 	public void saveFoo(Foo) {
 	 * 		// Impl
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -60,14 +60,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	// No annotation here, but present at class level
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -80,14 +80,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	&#64;Transactional
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -103,14 +103,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	// No annotation here neither
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -166,7 +166,7 @@ public final class SpringCodingRules {
 	 *
 	 * 	public void saveFoo(Foo) {
 	 * 		// Impl
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -182,14 +182,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	// No annotation here, but present at class level
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -202,14 +202,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	&#64;Transactional
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -225,14 +225,14 @@ public final class SpringCodingRules {
 	 *
 	 * 	public FooService(FooRepository repository) {
 	 * 		this.repository = repository;
-	 *    }
+	 * 	}
 	 *
 	 * 	// No annotation here neither
 	 * 	public void createFoo() {
 	 * 		Foo foo = new Foo();
 	 * 		// Some code
 	 * 		repository.saveFoo(foo);
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
