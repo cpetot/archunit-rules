@@ -149,7 +149,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * }</pre>
@@ -167,7 +167,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	}
 	 * }
 	 *
 	 * // No annotation
@@ -176,7 +176,7 @@ public final class StandardCodingRules {
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
 	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	}
 	 * }
 	 * }</pre>
 	 * </div>
