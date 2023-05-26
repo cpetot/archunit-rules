@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 public interface TestRepository {
 
 	void doSomethingWithDatabase();
+
+	default void doSomethingWithDefault() {
+		doSomethingWithDatabase();
+	}
 }
