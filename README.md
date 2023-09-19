@@ -7,12 +7,19 @@
 
 Add rules on [ArchUnit](https://github.com/TNG/ArchUnit)
 
+## Requirements
+
+### JDK
+A JDK 17 or more is required.
+
 ## Usage
+
+Check the latest available version on [Maven central] (https://search.maven.org/search?q=g:io.github.cpetot%20AND%20a:archunit-rules)
 
 ###### Gradle
 
 ```
-testImplementation 'io.github.cpetot:archunit-rules:0.4'
+testImplementation 'io.github.cpetot:archunit-rules:YOUR_VERSION'
 ```
 
 ###### Maven
@@ -22,7 +29,7 @@ testImplementation 'io.github.cpetot:archunit-rules:0.4'
 <dependency>
 	<groupId>io.github.cpetot</groupId>
 	<artifactId>archunit-rules</artifactId>
-	<version>0.4</version>
+	<version>YOUR_VERSION</version>
 	<scope>test</scope>
 </dependency>
 ```
