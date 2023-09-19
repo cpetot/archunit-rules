@@ -130,6 +130,11 @@ public final class SpringCodingRules {
 					.map(methodCall -> {
 						JavaClass originClass = methodCall.getOriginOwner();
 						JavaCodeUnit originMethod = methodCall.getOrigin();
+						if(originClass.equals(javaClass)) {
+							return SimpleConditionEvent.satisfied(
+									methodCall, String.format("Method %s is in the same class", originMethod.getFullName())
+							);
+						}
 						if (originMethod.isAnnotatedWith(Transactional.class)) {
 							return SimpleConditionEvent.satisfied(
 								methodCall, String.format("Method %s is @Transactional", originMethod.getFullName())
