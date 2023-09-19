@@ -4,7 +4,7 @@ import static com.tngtech.archunit.PublicAPI.Usage.ACCESS;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static io.github.cpetot.archunit.StandardCodingRules.HAS_A_PUBLIC_EMPTY_CONSTRUCTOR;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import com.tngtech.archunit.PublicAPI;
 import com.tngtech.archunit.lang.ArchRule;
