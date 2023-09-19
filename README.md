@@ -14,7 +14,7 @@ A JDK 17 or more is required.
 
 ## Usage
 
-Check the latest available version on [Maven central] (https://search.maven.org/search?q=g:io.github.cpetot%20AND%20a:archunit-rules)
+Check the latest available version on [Maven central](https://search.maven.org/search?q=g:io.github.cpetot%20AND%20a:archunit-rules)
 
 ###### Gradle
 
