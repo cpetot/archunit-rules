@@ -1,6 +1,6 @@
 package io.github.cpetot.archunit.jpa;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class TestEntityWithPublicArgedConstructor {
