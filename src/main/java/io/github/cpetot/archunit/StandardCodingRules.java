@@ -224,8 +224,8 @@ public final class StandardCodingRules {
 	 * 	private final ATargetClass aTargetClass;
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
-	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	  this.aTargetClass = aTargetClass;
+	 *  }
 	 * }
 	 *
 	 * }</pre>
@@ -242,8 +242,8 @@ public final class StandardCodingRules {
 	 * 	private final ATargetClass aTargetClass;
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
-	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	  this.aTargetClass = aTargetClass;
+	 *  }
 	 * }
 	 *
 	 * // No annotation
@@ -251,8 +251,8 @@ public final class StandardCodingRules {
 	 * 	private final ATargetClass aTargetClass;
 	 *
 	 * 	public ACallingClass(ATargetClass aTargetClass) {
-	 * 		this.aTargetClass = aTargetClass;
-	 *    }
+	 * 	  this.aTargetClass = aTargetClass;
+	 *  }
 	 * }
 	 * }</pre>
 	 * </div>
