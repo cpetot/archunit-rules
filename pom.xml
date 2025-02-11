@@ -43,7 +43,7 @@
 
 		<!-- Dependencies versions -->
 		<archunit.version>1.4.0</archunit.version>
-		<spring-boot.version>3.4.1</spring-boot.version>
+		<spring-boot.version>3.4.2</spring-boot.version>
 
 		<!-- Plugins versions -->
 		<nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
