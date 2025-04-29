@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import io.github.cpetot.archunit.spring.stereotypes.AStandardClassTypedWithRepository;
 import io.github.cpetot.archunit.spring.stereotypes.AStandardClassWithRepository;
 import io.github.cpetot.archunit.spring.stereotypes.ATestControllerWithRepository;
 import io.github.cpetot.archunit.spring.stereotypes.ATestRestControllerWithRepository;
@@ -97,6 +98,12 @@ class SpringCodingRulesTest {
 		@Test
 		void should_raise_no_error_with_rest_controller_class_depending_on_repository() {
 			JavaClasses classes = new ClassFileImporter().importClasses(AValidTestRepository.class, ATestRestControllerWithRepository.class);
+			SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_OR_CONTROLLER_CLASSES.allowEmptyShould(false).check(classes);
+		}
+
+		@Test
+		void should_raise_no_error_with_standard_class_typed_by_repository_but_not_calling_it() {
+			JavaClasses classes = new ClassFileImporter().importClasses(AValidTestRepository.class, AStandardClassTypedWithRepository.class);
 			SpringCodingRules.REPOSITORIES_ARE_ACCESSED_ONLY_BY_SERVICE_OR_CONTROLLER_CLASSES.allowEmptyShould(false).check(classes);
 		}
 
