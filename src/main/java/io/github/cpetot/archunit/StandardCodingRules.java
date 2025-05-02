@@ -1,10 +1,17 @@
 package io.github.cpetot.archunit;
 
-import static com.tngtech.archunit.PublicAPI.Usage.ACCESS;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
-import static com.tngtech.archunit.lang.conditions.ArchConditions.dependOnClassesThat;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import com.tngtech.archunit.PublicAPI;
+import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaCodeUnit;
+import com.tngtech.archunit.core.domain.JavaMember;
+import com.tngtech.archunit.core.domain.JavaMethod;
+import com.tngtech.archunit.core.domain.JavaModifier;
+import com.tngtech.archunit.core.domain.SourceCodeLocation;
+import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.ConditionEvents;
+import com.tngtech.archunit.lang.SimpleConditionEvent;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -12,17 +19,11 @@ import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.tngtech.archunit.PublicAPI;
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaCodeUnit;
-import com.tngtech.archunit.core.domain.JavaMethod;
-import com.tngtech.archunit.core.domain.JavaModifier;
-import com.tngtech.archunit.lang.ArchCondition;
-import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.lang.ConditionEvents;
-import com.tngtech.archunit.lang.SimpleConditionEvent;
+import static com.tngtech.archunit.PublicAPI.Usage.ACCESS;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
+import static com.tngtech.archunit.lang.conditions.ArchConditions.dependOnClassesThat;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 /**
  * StandardCodingRules provides a set of general {@link ArchCondition ArchConditions}
@@ -265,15 +266,13 @@ public final class StandardCodingRules {
 		return new ArchCondition<>("be called by @%s classes", annotationClass.getSimpleName()) {
 			@Override
 			public void check(JavaClass javaClass, ConditionEvents events) {
-				javaClass.getDirectDependenciesToSelf().stream()
-					.map(Dependency::getOriginClass)
-					.distinct()
+				getSourceClassesAccessedByCallOrField(javaClass)
 					.filter(originClass -> !originClass.isMetaAnnotatedWith(annotationClass))
 					.map(originClass -> SimpleConditionEvent.violated(originClass, String.format(
-							"Class %s is not annotated by @%s",
-							originClass.getFullName(),
-							annotationClass.getSimpleName()
-						))
+						"Class %s is not annotated by @%s",
+								 originClass.getFullName(),
+								 annotationClass.getSimpleName()
+							 ))
 					)
 					.forEach(events::add);
 			}
@@ -294,18 +293,30 @@ public final class StandardCodingRules {
 		return new ArchCondition<>("be called by %s classes", annotationsDescription) {
 			@Override
 			public void check(JavaClass javaClass, ConditionEvents events) {
-				javaClass.getDirectDependenciesToSelf().stream()
-					.map(Dependency::getOriginClass)
-					.distinct()
-					.filter(originClass -> Arrays.stream(annotationsClasses).noneMatch(originClass::isMetaAnnotatedWith))
-					.map(originClass -> SimpleConditionEvent.violated(originClass, String.format(
-							"Class %s is annotated neither by %s",
-							originClass.getFullName(),
-							annotationsDescription
-						))
-					)
-					.forEach(events::add);
+				getSourceClassesAccessedByCallOrField(javaClass)
+				.filter(originClass -> Arrays.stream(annotationsClasses).noneMatch(originClass::isMetaAnnotatedWith))
+				.map(originClass -> SimpleConditionEvent.violated(originClass, String.format(
+						"Class %s is annotated neither by %s",
+						originClass.getFullName(),
+						annotationsDescription
+					))
+				)
+				.forEach(events::add);
 			}
 		};
+	}
+
+	private static Stream<JavaClass> getSourceClassesAccessedByCallOrField(JavaClass javaClass) {
+		return Stream.concat(
+				javaClass.getCodeUnitCallsToSelf()
+					.stream()
+					.map(codeUnit -> codeUnit.getOrigin()
+						.getSourceCodeLocation()),
+				javaClass.getFieldsWithTypeOfSelf()
+					.stream()
+					.map(JavaMember::getSourceCodeLocation)
+			)
+			.map(SourceCodeLocation::getSourceClass)
+			.distinct();
 	}
 }
